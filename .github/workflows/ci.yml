@@ -32,7 +32,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Build renderer (Next)
-        run: npm --prefix renderer run build
+        run: npx --yes next build ./renderer
       - name: Build Electron app
         run: npm run build
       - name: Upload artifact
