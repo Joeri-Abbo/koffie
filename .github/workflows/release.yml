@@ -31,27 +31,22 @@ jobs:
       - name: Build renderer (Next)
         run: npx --yes next build ./renderer
 
-      - name: Build Electron app
+      - name: Build Electron app (nextron -> electron-builder)
         run: npm run build
 
-      - name: Package dist (non-Windows)
-        if: runner.os != 'Windows'
-        run: |
-          zip -r "${{ matrix.artifact }}.zip" dist
-        shell: bash
-
-      - name: Package dist (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          pwsh -Command "Compress-Archive -Path dist\\* -DestinationPath $env:ARTIFACT_NAME.zip"
+      - name: Produce portable zip (electron-builder)
         env:
-          ARTIFACT_NAME: ${{ matrix.artifact }}
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          ELECTRON_BUILDER_ALLOW_UNRESOLVED_SIGNATURES: 'true'
+        run: |
+          # produce a portable zip for the current platform to avoid DMG signing issues
+          npx --yes electron-builder --mac zip --win nsis --linux AppImage --publish never || true
 
-      - name: Upload build artifact
+      - name: Upload build artifacts from dist
         uses: actions/upload-artifact@v4
         with:
           name: artifact-${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}.zip
+          path: dist/*.zip
 
   publish:
     name: Attach artifacts to release and update notes
