@@ -29,7 +29,7 @@
     "@types/testing-library__react": "^10.0.1",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^30.1.2",
-    "electron": "^34.0.0",
+    "electron": "^35.7.5",
     "electron-builder": "^24.13.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.1.3",
