@@ -43,7 +43,7 @@ jobs:
           npx --yes electron-builder --mac zip --win nsis --linux AppImage --publish never || true
 
       - name: Upload build artifacts from dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: artifact-${{ matrix.artifact }}
           path: dist/*.zip
